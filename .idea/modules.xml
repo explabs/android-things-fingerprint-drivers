@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/FingerprintDrivers.iml" filepath="$PROJECT_DIR$/FingerprintDrivers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/driver-r301t/driver-r301t.iml" filepath="$PROJECT_DIR$/driver-r301t/driver-r301t.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sample-r301t/app.iml" filepath="$PROJECT_DIR$/sample-r301t/app.iml" />
+    </modules>
+  </component>
+</project>

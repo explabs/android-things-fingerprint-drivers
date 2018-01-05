@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.5.0'
+    }
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+}
+
+dependencies {
+    implementation 'com.android.support:support-annotations:27.0.2'
+    compileOnly 'com.google.android.things:androidthings:0.6-devpreview'
+}
+
+publish {
+    userOrg = 'huttka'
+    groupId = 'space.huttka.androidthings'
+    artifactId = 'driver-r301t'
+    publishVersion = '0.0.1'
+    desc = 'Android Things driver for R301T Fingerprint Scanner.'
+    website = 'https://github.com/huttka/fingerprint-androidthings/driver-r301t'
+}

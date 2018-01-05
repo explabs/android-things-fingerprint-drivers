@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="space.huttka.androidthings.driver-r301t" >
+    <application>
+        <uses-library android:required="false" android:name="com.google.android.things"/>
+    </application>
+</manifest>

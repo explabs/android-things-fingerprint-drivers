@@ -40,4 +40,4 @@ dependencies {
     SOFTWARE.
 
 ## Maintained by
-![Huttka Labs Logo](assets/logo.png)
+[![Huttka Labs Logo](assets/logo.png)](http://huttka.space)

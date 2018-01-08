@@ -1,5 +1,27 @@
-R301T Fingerprint Module driver for Android Things
+R30x Fingerprint Module driver for Android Things [![Android Things](https://img.shields.io/badge/android--things-0.6.1--devpreview-red.svg)](https://developer.android.com/things/preview/releases.html#preview-6-1)
 ==================================================
+
+An Android Things library for Fingerprint scanners R30x series (tested on R301T)
+
+| Module | Status      | 
+| ------ | :---------: |
+| R300   | Not Working |
+| R301   | Not Tested  |
+| R301T  | Not Tested  |
+| R302   | Not Tested  |
+| R303   | Not Tested  |
+| R303T  | Not Tested  |
+| R306   | Not Tested  |
+| R307   | Not Tested  |
+| R308   | Not Tested  |
+| R309   | Not Tested  |
+
+Based on [Adafruit-Fingerprint-Sensor-Library](https://github.com/adafruit/https://github.com/adafruit/Adafruit-Fingerprint-Sensor-Library) by **Adafruit**
+
+### Features
+- [ ] Validating password
+- [ ] Authenticating fingerprint
+- [ ] Fetching fingerprint image
 
 How to use the driver
 ---------------------
@@ -13,7 +35,20 @@ dependencies {
 }
 ```
 ### Hardware Setup
+
+The connections vary based on the [board](https://developer.android.com/things/hardware/index.html) used.
+
+### Raspberry Pi 3
 ![Connection Wiring](assets/connection.png)
+
+| R30X Pin   | RPi Pin name | RPi Pin number               |
+| ---------- | ------------ | ---------------------------- |
+| 5V         | 5V           | 2, 4                         |
+| GND        | GND          | 6, 9, 14, 20, 25, 30, 34, 39 |
+| TXD        | RXD, GPIO15  | 8                            |
+| RXD        | TXD, GPIO14  | 10                           |
+| TOUCH      | Not Used Yet | --                           |
+| TouchPower | Not Used Yet | --                           |
 
 ## License
 

@@ -22,12 +22,14 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:support-annotations:27.0.2'
-    compileOnly 'com.google.android.things:androidthings:0.6-devpreview'
+    implementation rootProject.ext.dependencies['support-annotations']
+    provided rootProject.ext.dependencies['androidthings']
+
+    testCompile rootProject.ext.dependencies['junit']
 }
 
 publish {
-    userOrg = 'huttka'
+    userOrg = 'Huttka Labs'
     groupId = 'space.huttka.androidthings'
     artifactId = 'driver-r301t'
     publishVersion = '0.0.1'

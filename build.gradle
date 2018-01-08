@@ -33,6 +33,8 @@ ext {
     targetSdkVersion = 26
 
     dependencies = [
-            'androidthings': 'com.google.android.things:androidthings:0.6.1-devpreview'
+            'support-annotations': 'com.android.support:support-annotations:27.0.2',
+            'androidthings': 'com.google.android.things:androidthings:0.6.1-devpreview',
+            'junit': 'junit:junit:4.12'
     ]
 }

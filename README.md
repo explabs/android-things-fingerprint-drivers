@@ -52,9 +52,9 @@ The connections vary based on the [board](https://developer.android.com/things/h
 
 ## Resources
 
-* ![R301T product data sheet](assets/R301T%20fingerprint%20module%20user%20manual.pdf)
-* ![R300 series vendor data sheets](https://www.dropbox.com/sh/orprmb3bgb6lqb6/AACpiIXOF91R7-RQ9OkD4JXha?dl=0)
-* ![ZFM-20 series data sheet](https://cdn-shop.adafruit.com/datasheets/ZFM+user+manualV15.pdf)
+* [R301T product data sheet](assets/R301T%20fingerprint%20module%20user%20manual.pdf)
+* [R300 series vendor data sheets](https://www.dropbox.com/sh/orprmb3bgb6lqb6/AACpiIXOF91R7-RQ9OkD4JXha?dl=0)
+* [ZFM-20 series data sheet](https://cdn-shop.adafruit.com/datasheets/ZFM+user+manualV15.pdf)
 
 ## License
 

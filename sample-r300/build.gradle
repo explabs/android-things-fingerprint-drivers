@@ -1,0 +1,34 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+
+    defaultConfig {
+        applicationId "space.huttka.androidthings.sample.r300"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.compileSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation rootProject.ext.dependencies['constraint-layout']
+    compileOnly rootProject.ext.dependencies['androidthings']
+
+    testCompile rootProject.ext.dependencies['junit']
+
+    compile project(':driver-r300')
+}

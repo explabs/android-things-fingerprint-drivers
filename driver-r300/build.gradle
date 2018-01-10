@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.5.0'
+    }
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+}
+
+dependencies {
+    implementation rootProject.ext.dependencies['support-annotations']
+    provided rootProject.ext.dependencies['androidthings']
+
+    testCompile rootProject.ext.dependencies['junit']
+}
+
+publish {
+    userOrg = 'Huttka Labs'
+    groupId = 'space.huttka.androidthings.driver'
+    artifactId = 'r300'
+    publishVersion = '0.0.1'
+    desc = 'Android Things driver for R300 series an SM-20 series Fingerprint Scanner.'
+    website = 'https://github.com/huttka/fingerprint-androidthings/driver-r301t'
+}

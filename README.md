@@ -1,13 +1,13 @@
-R30x Fingerprint Module driver for Android Things [![Android Things](https://img.shields.io/badge/android--things-0.6.1--devpreview-red.svg)](https://developer.android.com/things/preview/releases.html#preview-6-1)
+Fingerprint Module driver for Android Things [![Android Things](https://img.shields.io/badge/android--things-0.6.1--devpreview-red.svg)](https://developer.android.com/things/preview/releases.html#preview-6-1)
 ==================================================
 
-An Android Things library for Fingerprint scanners R30x series (tested on R301T)
+An Android Things library for Fingerprint scanners R30x series (tested on R301T) and ZFM-20 series
 
 | Module | Status      | 
 | ------ | :---------: |
-| R300   | Not Working |
+| R300   | Not Tested  |
 | R301   | Not Tested  |
-| R301T  | Not Tested  |
+| R301T  | Not Working |
 | R302   | Not Tested  |
 | R303   | Not Tested  |
 | R303T  | Not Tested  |
@@ -16,7 +16,7 @@ An Android Things library for Fingerprint scanners R30x series (tested on R301T)
 | R308   | Not Tested  |
 | R309   | Not Tested  |
 
-Based on [Adafruit-Fingerprint-Sensor-Library](https://github.com/adafruit/https://github.com/adafruit/Adafruit-Fingerprint-Sensor-Library) by **Adafruit**
+Based on [Adafruit-Fingerprint-Sensor-Library](https://github.com/adafruit/Adafruit-Fingerprint-Sensor-Library) by **Adafruit**
 
 ### Features
 - [ ] Validating password
@@ -49,6 +49,12 @@ The connections vary based on the [board](https://developer.android.com/things/h
 | RXD        | TXD, GPIO14  | 10                           |
 | TOUCH      | Not Used Yet | --                           |
 | TouchPower | Not Used Yet | --                           |
+
+## Resources
+
+* ![R301T product data sheet](assets/R301T%20fingerprint%20module%20user%20manual.pdf)
+* ![R300 series vendor data sheets](https://www.dropbox.com/sh/orprmb3bgb6lqb6/AACpiIXOF91R7-RQ9OkD4JXha?dl=0)
+* ![ZFM-20 series data sheet](https://cdn-shop.adafruit.com/datasheets/ZFM+user+manualV15.pdf)
 
 ## License
 

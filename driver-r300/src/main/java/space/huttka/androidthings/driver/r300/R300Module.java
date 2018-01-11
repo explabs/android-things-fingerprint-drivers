@@ -14,6 +14,7 @@ import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_COMM
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_OK;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_PACKETRECIEVEERR;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_PASSFAIL;
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_SETPASSWORD;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_VERIFYPASSWORD;
 
 /**
@@ -70,11 +71,7 @@ public class R300Module implements AutoCloseable {
         }
     }
 
-    public boolean verifyPassword() {
-        return checkPassword() == FINGERPRINT_OK;
-    }
-
-    private int checkPassword() {
+    public int VfyPwd() {
         try {
             R300Packet packet = getPacket(
                     FINGERPRINT_VERIFYPASSWORD,
@@ -92,6 +89,28 @@ public class R300Module implements AutoCloseable {
                 return FINGERPRINT_PACKETRECIEVEERR;
         } catch (IOException e) {
             Log.e(TAG, "Error checking password: ", e);
+            return FINGERPRINT_PACKETRECIEVEERR;
+        }
+    }
+
+    public int SetPwd(int password) {
+        try {
+            R300Packet packet = getPacket(
+                    FINGERPRINT_SETPASSWORD,
+                    (byte) ((password >> 24) & 0xFF),
+                    (byte) ((password >> 16) & 0xFF),
+                    (byte) ((password >> 8) & 0xFF),
+                    (byte) (password & 0xFF)
+            );
+
+            if (packet.data[0] == FINGERPRINT_OK) {
+                mPassword = password;
+                return FINGERPRINT_OK;
+            } else {
+                return FINGERPRINT_PACKETRECIEVEERR;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error setting password: ", e);
             return FINGERPRINT_PACKETRECIEVEERR;
         }
     }

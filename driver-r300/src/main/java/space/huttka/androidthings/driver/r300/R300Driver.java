@@ -5,6 +5,8 @@ import android.os.Handler;
 
 import java.io.IOException;
 
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_OK;
+
 /**
  * @author leon0399
  */
@@ -59,7 +61,12 @@ public class R300Driver implements AutoCloseable {
         this.module.close();
     }
 
+
     public boolean verifyPassword() {
-        return module.verifyPassword();
+        return module.VfyPwd() == FINGERPRINT_OK;
+    }
+
+    public boolean setPassword(int password) {
+        return module.SetPwd(password) == FINGERPRINT_OK;
     }
 }

@@ -1,26 +1,25 @@
 package space.huttka.androidthings.driver.r300;
 
+import android.util.Log;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
  * @author leon0399
  */
+@SuppressWarnings("WeakerAccess")
 public class R300Packet {
-
     public static final byte FINGERPRINT_STARTCODE_1 = (byte) 0xEF;
     public static final byte FINGERPRINT_STARTCODE_2 = (byte) 0x01;
-
     public static final byte FINGERPRINT_ADDER_1 = (byte) 0xFF;
     public static final byte FINGERPRINT_ADDER_2 = (byte) 0xFF;
     public static final byte FINGERPRINT_ADDER_3 = (byte) 0xFF;
     public static final byte FINGERPRINT_ADDER_4 = (byte) 0xFF;
-
     public static final byte FINGERPRINT_COMMANDPACKET = 0x1;
     public static final byte FINGERPRINT_DATAPACKET = 0x2;
     public static final byte FINGERPRINT_ACKPACKET = 0x7;
     public static final byte FINGERPRINT_ENDDATAPACKET = 0x8;
-
     public static final byte FINGERPRINT_OK = 0x00;
     public static final byte FINGERPRINT_PACKETRECIEVEERR = 0x01;
     public static final byte FINGERPRINT_NOFINGER = 0x02;
@@ -43,10 +42,8 @@ public class R300Packet {
     public static final byte FINGERPRINT_INVALIDREG = 0x1A;
     public static final byte FINGERPRINT_ADDRCODE = 0x20;
     public static final byte FINGERPRINT_PASSVERIFY = 0x21;
-
     public static final int FINGERPRINT_TIMEOUT = 0xFF;
     public static final int FINGERPRINT_BADPACKET = 0xFE;
-
     public static final byte FINGERPRINT_GETIMAGE = 0x01;
     public static final byte FINGERPRINT_IMAGE2TZ = 0x02;
     public static final byte FINGERPRINT_REGMODEL = 0x05;
@@ -59,36 +56,35 @@ public class R300Packet {
     public static final byte FINGERPRINT_VERIFYPASSWORD = 0x13;
     public static final byte FINGERPRINT_HISPEEDSEARCH = 0x1B;
     public static final byte FINGERPRINT_TEMPLATECOUNT = 0x1D;
-
+    private static final String TAG = "R300Packet";
     /**
      * "Header" in Data package format
      */
-    public final byte[] header;
+    public byte[] header = new byte[2];
 
     /**
      * "Adder" in Data package format
      */
-    public final byte[] adder;
+    public byte[] adder = new byte[4];
 
     /**
      * "Package identifier" in Data package format
      */
-    public final byte pid;
+    public byte pid;
 
     /**
      * "Package length" in Data package format
      */
-    public final byte[] length;
+    public byte[] length = new byte[2];
 
     /**
      * "Package contents" in Data package format
      */
-    public final byte[] data;
+    public byte[] data = new byte[256];
 
-    /**
-     * "Checksum" in Data package format
-     */
-    public final byte[] sum = new byte[2];
+    protected R300Packet() {
+
+    }
 
     /**
      * @param pid  "Package identifier"
@@ -101,32 +97,42 @@ public class R300Packet {
 
         int packetLength = data.length + 2;
         this.length = new byte[]{(byte) ((packetLength >> 8) & 0xFF), (byte) (packetLength & 0xFF)};
-        this.data = calcChecksum(pid, length, data);
+        this.data = data;
     }
 
     /**
-     * The arithmetic sum of package identifier, package length and all package contens.
+     * The arithmetic sum of package identifier, package length and all package contents.
      * Overflowing bits are omitted. high byte is transferred first.
      *
      * @param pid    "Package identifier"
      * @param length "Package length"
      * @param data   "Package contents"
-     * @return Checksum
+     * @return Checksum (2 bytes)
      */
     private byte[] calcChecksum(byte pid, byte length[], byte[] data) {
-        long ck = 0;
+        long ck = 0x0000;
 
-        ck += pid;
+        ck += (pid & 0xff);
 
         for (byte len : length) {
-            ck += len;
+            ck += (len & 0xff);
         }
 
         for (byte dat : data) {
-            ck += dat;
+            ck += (dat & 0xff);
         }
 
+        Log.d(TAG, "Checksum: " + Long.toHexString(ck));
+
         return new byte[]{(byte) ((ck >> 8) & 0xFF), (byte) (ck & 0xFF)};
+    }
+
+    protected void setHeader(byte[] header) {
+        this.header = header;
+    }
+
+    protected void setAdder(byte[] adder) {
+        this.adder = adder;
     }
 
     public void write(ByteArrayOutputStream byteArrayOutputStream) throws IOException {
@@ -135,7 +141,7 @@ public class R300Packet {
         byteArrayOutputStream.write(this.pid);
         byteArrayOutputStream.write(this.length);
         byteArrayOutputStream.write(this.data);
-        byteArrayOutputStream.write(this.sum);
+        byteArrayOutputStream.write(calcChecksum(this.pid, this.length, this.data));
     }
 
 }

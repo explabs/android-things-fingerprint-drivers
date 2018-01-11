@@ -11,6 +11,8 @@ import java.io.IOException;
 @SuppressWarnings("WeakerAccess")
 public class R300Driver implements AutoCloseable {
 
+    public static final int DEFAULT_BAUDRATE = 57600;
+
     private final R300Module module;
 
     /**
@@ -18,11 +20,11 @@ public class R300Driver implements AutoCloseable {
      * @param uartName       UART port name where the module is attached. Cannot be null.
      * @param touchName
      * @param touchPowerName
-     * @param baudRate       Baud rate used for the module UART.
      * @param password
+     * @throws IOException
      */
-    public R300Driver(Context context, String uartName, String touchName, String touchPowerName, int baudRate, int password) throws IOException {
-        this(context, uartName, touchName, touchPowerName, baudRate, password, null);
+    public R300Driver(Context context, String uartName, String touchName, String touchPowerName, int password) throws IOException {
+        this(context, uartName, touchName, touchPowerName, password, DEFAULT_BAUDRATE, null);
     }
 
     /**
@@ -30,16 +32,34 @@ public class R300Driver implements AutoCloseable {
      * @param uartName       UART port name where the module is attached. Cannot be null.
      * @param touchName
      * @param touchPowerName
-     * @param baudRate       Baud rate used for the module UART.
      * @param password
      * @param handler        optional {@link Handler} for software polling and callback events.
+     * @throws IOException
      */
-    public R300Driver(Context context, String uartName, String touchName, String touchPowerName, int baudRate, int password, Handler handler) throws IOException {
-        this.module = new R300Module(uartName, baudRate, password, handler);
+    public R300Driver(Context context, String uartName, String touchName, String touchPowerName, int password, Handler handler) throws IOException {
+        this(context, uartName, touchName, touchPowerName, password, DEFAULT_BAUDRATE, handler);
+    }
+
+    /**
+     * @param context        Current context, used for loading resources
+     * @param uartName       UART port name where the module is attached. Cannot be null.
+     * @param touchName
+     * @param touchPowerName
+     * @param password
+     * @param baudRate       Baud rate used for the module UART.
+     * @param handler        optional {@link Handler} for software polling and callback events.
+     * @throws IOException
+     */
+    protected R300Driver(Context context, String uartName, String touchName, String touchPowerName, int password, int baudRate, Handler handler) throws IOException {
+        this.module = new R300Module(uartName, password, baudRate, handler);
     }
 
     @Override
     public void close() throws Exception {
         this.module.close();
+    }
+
+    public boolean verifyPassword() {
+        return module.verifyPassword();
     }
 }

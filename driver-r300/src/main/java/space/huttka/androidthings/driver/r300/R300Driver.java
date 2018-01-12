@@ -24,14 +24,36 @@ public class R300Driver implements AutoCloseable {
 
     private final R300Module module;
 
+    /**
+     * Initializes R300 with the configured UART port, address and password.
+     *
+     * @param uartPort UART port name where the module is attached. Cannot be null.
+     * @throws IOException if the hardware board had a problem with its hardware ports
+     */
     public R300Driver(String uartPort) throws IOException {
         this(uartPort, DEFAULT_ADDER, DEFAULT_PASS);
     }
 
+    /**
+     * Initializes R300 with the configured UART port, address and password.
+     *
+     * @param uartPort UART port name where the module is attached. Cannot be null.
+     * @param address  Address of module.
+     * @param password Password of module.
+     * @throws IOException if the hardware board had a problem with its hardware ports
+     */
     public R300Driver(String uartPort, int address, int password) throws IOException {
         this(uartPort, intToBytes(address), intToBytes(password));
     }
 
+    /**
+     * Initializes R300 with the configured UART port, address and password.
+     *
+     * @param uartPort UART port name where the module is attached. Cannot be null.
+     * @param address  Address of module.
+     * @param password Password of module.
+     * @throws IOException if the hardware board had a problem with its hardware ports
+     */
     public R300Driver(String uartPort, byte[] address, byte[] password) throws IOException {
         this.module = new R300Module(uartPort, address, password);
 
@@ -40,6 +62,12 @@ public class R300Driver implements AutoCloseable {
         }
     }
 
+    /**
+     * Transforms integer to array of unsigned bytes.
+     *
+     * @param i Integer to be transformed.
+     * @return Array of unsigned bytes. Higher bit first.
+     */
     private static byte[] intToBytes(int i) {
         return new byte[]{(byte) ((i >> 24) & 0xFF), (byte) ((i >> 16) & 0xFF), (byte) ((i >> 8) & 0xFF), (byte) (i & 0xFF)};
     }
@@ -49,46 +77,58 @@ public class R300Driver implements AutoCloseable {
         this.module.close();
     }
 
+    /**
+     * Verify Module’s handshaking password.
+     *
+     * @return true if password is correct
+     */
     public boolean verifyPassword() {
         return module.VfyPwd() == FINGERPRINT_OK;
     }
 
-
     /**
-     * AVOID USING!
+     * <b>Warning!</b> Avoid using! Password will not be saved!
+     * <p>
+     * Set Module’s handshaking password.
      *
-     * @param password
-     * @return
+     * @param password Password to be set
+     * @return true if password setting completed
      */
     public boolean setPassword(int password) {
         return this.setPassword(intToBytes(password));
     }
 
     /**
-     * AVOID USING!
+     * <b>Warning!</b> Avoid using! Password will not be saved!
+     * <p>
+     * Set Module’s handshaking password.
      *
-     * @param password
-     * @return
+     * @param password Password to be set
+     * @return true if password setting completed
      */
     public boolean setPassword(byte[] password) {
         return module.SetPwd(password) == FINGERPRINT_OK;
     }
 
     /**
-     * AVOID USING!
+     * <b>Warning!</b> Avoid using! Address will not be saved!
+     * <p>
+     * Set Module’s handshaking password.
      *
-     * @param address
-     * @return
+     * @param address Password to be set
+     * @return true if address setting completed
      */
     public boolean setAddress(int address) {
         return this.setAddress(intToBytes(address));
     }
 
     /**
-     * AVOID USING!
+     * <b>Warning!</b> Avoid using! Address will not be saved!
+     * <p>
+     * Set Module’s handshaking password.
      *
-     * @param address
-     * @return
+     * @param address Password to be set
+     * @return true if address setting completed
      */
     public boolean setAddress(byte[] address) {
         return module.SetAdder(address) == FINGERPRINT_OK;

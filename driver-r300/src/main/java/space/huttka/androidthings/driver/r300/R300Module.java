@@ -164,7 +164,7 @@ public class R300Module implements AutoCloseable {
      * @param instruction Instruction code (identifier of function)
      * @param data        Data to be written
      * @return Response of the module
-     * @throws IOException
+     * @throws IOException todo: how to describe that?
      */
     private R300Packet getPacket(byte instruction, byte[] data) throws IOException {
         writePacket(createCommand(instruction, data));
@@ -189,7 +189,7 @@ public class R300Module implements AutoCloseable {
      * Writes packet to module
      *
      * @param packet Packet to be written
-     * @throws IOException
+     * @throws IOException todo: how to describe that?
      */
     private void writePacket(R300Packet packet) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -245,12 +245,12 @@ public class R300Module implements AutoCloseable {
                         case 7:
                         case 8:
                             packet.length[(index - 7)] = buf;
-                            wireLength = (packet.length[0] << 8) | packet.length[1];
+                            wireLength = (packet.length[0] << 8) | packet.length[1]; // transform to integer
                             break;
                         default:
                             packet.data[(index - 9)] = buf;
                             if ((index - 8) >= wireLength) {
-                                Log.d(TAG, String.format("Read from module: %s", byteArrayToHexString(byteArrayOutputStream.toByteArray())));
+                                Log.d(TAG, String.format("Read from module: %s", byteArrayToHexString(byteArrayOutputStream.toByteArray()))); // todo: delete after end of development
                                 return packet;
                             }
                             break;

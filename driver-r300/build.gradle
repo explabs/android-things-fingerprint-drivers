@@ -33,6 +33,6 @@ publish {
     groupId = 'space.huttka.androidthings.driver'
     artifactId = 'r300'
     publishVersion = '0.0.1'
-    desc = 'Android Things driver for R300 series an SM-20 series Fingerprint Scanner.'
+    desc = 'Android Things driver for R300 series an ZFM-20 series Fingerprint Scanner.'
     website = 'https://github.com/huttka/fingerprint-androidthings/driver-r301t'
 }

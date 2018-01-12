@@ -5,9 +5,11 @@ import java.io.IOException;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_OK;
 
 /**
+ * Driver to interact with R300 series and ZFM-20 series Fingerprint Scanner.
+ *
  * @author leon0399
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class R300Driver implements AutoCloseable {
 
     public static final byte DEFAULT_ADDER_1 = (byte) 0xFF;

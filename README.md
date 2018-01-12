@@ -1,13 +1,13 @@
 Fingerprint Module driver for Android Things [![Android Things](https://img.shields.io/badge/android--things-0.6.1--devpreview-red.svg)](https://developer.android.com/things/preview/releases.html#preview-6-1)
 ==================================================
 
-An Android Things library for Fingerprint scanners R30x series (tested on R301T) and ZFM-20 series
+An Android Things library for Fingerprint scanners R300 series (R301T as reference) and ZFM-20 series
 
 | Module | Status      | 
 | ------ | :---------: |
 | R300   | Not Tested  |
 | R301   | Not Tested  |
-| R301T  | Not Working |
+| R301T  | Working     |
 | R302   | Not Tested  |
 | R303   | Not Tested  |
 | R303T  | Not Tested  |
@@ -52,14 +52,14 @@ How to use the driver
 To use the `r301t` driver, simply add the line below to your project's `build.gradle`, where `<version>` matches the last version of the driver available on maven central.
 ```groovy
 dependencies {
-    compile 'space.huttka.androidthings:driver-r301t:<version>'
+    compile 'space.huttka.androidthings.driver:r300:<version>'
 }
 ```
 ### Hardware Setup
 
 The connections vary based on the [board](https://developer.android.com/things/hardware/index.html) used.
 
-### Raspberry Pi 3
+#### Raspberry Pi 3
 ![Connection Wiring](assets/connection.png)
 
 | R30X Pin   | RPi Pin name | RPi Pin number               |
@@ -71,13 +71,22 @@ The connections vary based on the [board](https://developer.android.com/things/h
 | TOUCH      | Not Used Yet | --                           |
 | TouchPower | Not Used Yet | --                           |
 
-## Resources
+### Fetching finger image
+```java
+    R300Driver r300Driver = new R300Driver("UART0");
+    
+    // todo here...
+```
 
-* ![R301T product data sheet](assets/R301T%20fingerprint%20module%20user%20manual.pdf)
-* ![R300 series vendor data sheets](https://www.dropbox.com/sh/orprmb3bgb6lqb6/AACpiIXOF91R7-RQ9OkD4JXha?dl=0)
-* ![ZFM-20 series data sheet](https://cdn-shop.adafruit.com/datasheets/ZFM+user+manualV15.pdf)
+Resources
+---------
 
-## License
+* [R301T product data sheet](assets/R301T%20fingerprint%20module%20user%20manual.pdf)
+* [R300 series vendor data sheets](https://www.dropbox.com/sh/orprmb3bgb6lqb6/AACpiIXOF91R7-RQ9OkD4JXha?dl=0)
+* [ZFM-20 series data sheet](https://cdn-shop.adafruit.com/datasheets/ZFM+user+manualV15.pdf)
+
+License
+-------
 
     MIT License
 
@@ -101,5 +110,6 @@ The connections vary based on the [board](https://developer.android.com/things/h
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-## Maintained by
+Maintained by
+-------------
 [![Huttka Labs Logo](assets/logo.png)](http://huttka.space)

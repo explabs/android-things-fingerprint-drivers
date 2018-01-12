@@ -12,10 +12,7 @@ import java.io.IOException;
 public class R300Packet {
     public static final byte FINGERPRINT_STARTCODE_1 = (byte) 0xEF;
     public static final byte FINGERPRINT_STARTCODE_2 = (byte) 0x01;
-    public static final byte FINGERPRINT_ADDER_1 = (byte) 0xFF;
-    public static final byte FINGERPRINT_ADDER_2 = (byte) 0xFF;
-    public static final byte FINGERPRINT_ADDER_3 = (byte) 0xFF;
-    public static final byte FINGERPRINT_ADDER_4 = (byte) 0xFF;
+
     public static final byte FINGERPRINT_COMMANDPACKET = 0x1;
     public static final byte FINGERPRINT_DATAPACKET = 0x2;
     public static final byte FINGERPRINT_ACKPACKET = 0x7;
@@ -43,7 +40,7 @@ public class R300Packet {
     public static final byte FINGERPRINT_ADDRCODE = 0x20;
     public static final byte FINGERPRINT_PASSVERIFY = 0x21;
     public static final int FINGERPRINT_TIMEOUT = 0xFF;
-    public static final int FINGERPRINT_BADPACKET = 0xFE;
+    public static final byte FINGERPRINT_BADPACKET = (byte) 0xFE;
     public static final byte FINGERPRINT_GETIMAGE = 0x01;
     public static final byte FINGERPRINT_IMAGE2TZ = 0x02;
     public static final byte FINGERPRINT_REGMODEL = 0x05;
@@ -52,11 +49,15 @@ public class R300Packet {
     public static final byte FINGERPRINT_UPLOAD = 0x08;
     public static final byte FINGERPRINT_DELETE = 0x0C;
     public static final byte FINGERPRINT_EMPTY = 0x0D;
-    public static final byte FINGERPRINT_SETPASSWORD = 0x12;
-    public static final byte FINGERPRINT_VERIFYPASSWORD = 0x13;
     public static final byte FINGERPRINT_HISPEEDSEARCH = 0x1B;
     public static final byte FINGERPRINT_TEMPLATECOUNT = 0x1D;
+
+    public static final byte FINGERPRINT_VERIFYPASSWORD = 0x13;
+    public static final byte FINGERPRINT_SETPASSWORD = 0x12;
+    public static final byte FINGERPRINT_SETADDRESS = 0x15;
+
     private static final String TAG = "R300Packet";
+
     /**
      * "Header" in Data package format
      */
@@ -90,13 +91,14 @@ public class R300Packet {
      * @param pid  "Package identifier"
      * @param data "Package contents"
      */
-    public R300Packet(byte pid, byte[] data) {
+    public R300Packet(byte[] adder, byte pid, byte[] data) {
         this.header = new byte[]{FINGERPRINT_STARTCODE_1, FINGERPRINT_STARTCODE_2};
-        this.adder = new byte[]{FINGERPRINT_ADDER_1, FINGERPRINT_ADDER_2, FINGERPRINT_ADDER_3, FINGERPRINT_ADDER_4};
+        this.adder = adder;
         this.pid = pid;
 
         int packetLength = data.length + 2;
         this.length = new byte[]{(byte) ((packetLength >> 8) & 0xFF), (byte) (packetLength & 0xFF)};
+
         this.data = data;
     }
 

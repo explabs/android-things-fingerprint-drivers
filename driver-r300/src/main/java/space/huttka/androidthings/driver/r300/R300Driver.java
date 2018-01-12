@@ -1,59 +1,77 @@
 package space.huttka.androidthings.driver.r300;
 
-import android.content.Context;
-import android.os.Handler;
-
 import java.io.IOException;
 
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_OK;
 
 /**
+ * Driver to interact with R300 series and ZFM-20 series Fingerprint Scanner.
+ *
  * @author leon0399
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class R300Driver implements AutoCloseable {
 
-    public static final int DEFAULT_BAUDRATE = 57600;
+    public static final byte DEFAULT_ADDER_1 = (byte) 0xFF;
+    public static final byte DEFAULT_ADDER_2 = (byte) 0xFF;
+    public static final byte DEFAULT_ADDER_3 = (byte) 0xFF;
+    public static final byte DEFAULT_ADDER_4 = (byte) 0xFF;
+    public static final byte[] DEFAULT_ADDER = new byte[]{DEFAULT_ADDER_1, DEFAULT_ADDER_2, DEFAULT_ADDER_3, DEFAULT_ADDER_4};
+
+    public static final byte DEFAULT_PASS_1 = (byte) 0xFF;
+    public static final byte DEFAULT_PASS_2 = (byte) 0xFF;
+    public static final byte DEFAULT_PASS_3 = (byte) 0xFF;
+    public static final byte DEFAULT_PASS_4 = (byte) 0xFF;
+    public static final byte[] DEFAULT_PASS = new byte[]{DEFAULT_PASS_1, DEFAULT_PASS_2, DEFAULT_PASS_3, DEFAULT_PASS_4};
 
     private final R300Module module;
 
     /**
-     * @param context        Current context, used for loading resources
-     * @param uartName       UART port name where the module is attached. Cannot be null.
-     * @param touchName
-     * @param touchPowerName
-     * @param password
-     * @throws IOException
+     * Initializes R300 with the configured UART port, address and password.
+     *
+     * @param uartPort UART port name where the module is attached. Cannot be null.
+     * @throws IOException if the hardware board had a problem with its hardware ports
      */
-    public R300Driver(Context context, String uartName, String touchName, String touchPowerName, int password) throws IOException {
-        this(context, uartName, touchName, touchPowerName, password, DEFAULT_BAUDRATE, null);
+    public R300Driver(String uartPort) throws IOException {
+        this(uartPort, DEFAULT_ADDER, DEFAULT_PASS);
     }
 
     /**
-     * @param context        Current context, used for loading resources
-     * @param uartName       UART port name where the module is attached. Cannot be null.
-     * @param touchName
-     * @param touchPowerName
-     * @param password
-     * @param handler        optional {@link Handler} for software polling and callback events.
-     * @throws IOException
+     * Initializes R300 with the configured UART port, address and password.
+     *
+     * @param uartPort UART port name where the module is attached. Cannot be null.
+     * @param address  Address of module.
+     * @param password Password of module.
+     * @throws IOException if the hardware board had a problem with its hardware ports
      */
-    public R300Driver(Context context, String uartName, String touchName, String touchPowerName, int password, Handler handler) throws IOException {
-        this(context, uartName, touchName, touchPowerName, password, DEFAULT_BAUDRATE, handler);
+    public R300Driver(String uartPort, int address, int password) throws IOException {
+        this(uartPort, intToBytes(address), intToBytes(password));
     }
 
     /**
-     * @param context        Current context, used for loading resources
-     * @param uartName       UART port name where the module is attached. Cannot be null.
-     * @param touchName
-     * @param touchPowerName
-     * @param password
-     * @param baudRate       Baud rate used for the module UART.
-     * @param handler        optional {@link Handler} for software polling and callback events.
-     * @throws IOException
+     * Initializes R300 with the configured UART port, address and password.
+     *
+     * @param uartPort UART port name where the module is attached. Cannot be null.
+     * @param address  Address of module.
+     * @param password Password of module.
+     * @throws IOException if the hardware board had a problem with its hardware ports
      */
-    protected R300Driver(Context context, String uartName, String touchName, String touchPowerName, int password, int baudRate, Handler handler) throws IOException {
-        this.module = new R300Module(uartName, password, baudRate, handler);
+    public R300Driver(String uartPort, byte[] address, byte[] password) throws IOException {
+        this.module = new R300Module(uartPort, address, password);
+
+        if (!verifyPassword()) {
+            throw new IOException("Module not connected of wrong password!");
+        }
+    }
+
+    /**
+     * Transforms integer to array of unsigned bytes.
+     *
+     * @param i Integer to be transformed.
+     * @return Array of unsigned bytes. Higher bit first.
+     */
+    private static byte[] intToBytes(int i) {
+        return new byte[]{(byte) ((i >> 24) & 0xFF), (byte) ((i >> 16) & 0xFF), (byte) ((i >> 8) & 0xFF), (byte) (i & 0xFF)};
     }
 
     @Override
@@ -61,12 +79,60 @@ public class R300Driver implements AutoCloseable {
         this.module.close();
     }
 
-
+    /**
+     * Verify Module’s handshaking password.
+     *
+     * @return true if password is correct
+     */
     public boolean verifyPassword() {
         return module.VfyPwd() == FINGERPRINT_OK;
     }
 
+    /**
+     * <b>Warning!</b> Avoid using! Password will not be saved!
+     * <p>
+     * Set Module’s handshaking password.
+     *
+     * @param password Password to be set
+     * @return true if password setting completed
+     */
     public boolean setPassword(int password) {
+        return this.setPassword(intToBytes(password));
+    }
+
+    /**
+     * <b>Warning!</b> Avoid using! Password will not be saved!
+     * <p>
+     * Set Module’s handshaking password.
+     *
+     * @param password Password to be set
+     * @return true if password setting completed
+     */
+    public boolean setPassword(byte[] password) {
         return module.SetPwd(password) == FINGERPRINT_OK;
+    }
+
+    /**
+     * <b>Warning!</b> Avoid using! Address will not be saved!
+     * <p>
+     * Set Module’s handshaking password.
+     *
+     * @param address Password to be set
+     * @return true if address setting completed
+     */
+    public boolean setAddress(int address) {
+        return this.setAddress(intToBytes(address));
+    }
+
+    /**
+     * <b>Warning!</b> Avoid using! Address will not be saved!
+     * <p>
+     * Set Module’s handshaking password.
+     *
+     * @param address Password to be set
+     * @return true if address setting completed
+     */
+    public boolean setAddress(byte[] address) {
+        return module.SetAdder(address) == FINGERPRINT_OK;
     }
 }

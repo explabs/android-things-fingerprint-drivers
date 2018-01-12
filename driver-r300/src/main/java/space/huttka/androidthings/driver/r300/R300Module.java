@@ -1,6 +1,6 @@
 package space.huttka.androidthings.driver.r300;
 
-import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.things.pio.PeripheralManagerService;
@@ -9,11 +9,11 @@ import com.google.android.things.pio.UartDevice;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_BADPACKET;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_COMMANDPACKET;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_OK;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_PACKETRECIEVEERR;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_PASSFAIL;
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_SETADDRESS;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_SETPASSWORD;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_VERIFYPASSWORD;
 
@@ -22,26 +22,40 @@ import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_VERI
  */
 @SuppressWarnings("WeakerAccess")
 public class R300Module implements AutoCloseable {
+    public static final int DEFAULT_BAUDRATE = 57600;
+
     private static final String TAG = "R300Module";
 
     private UartDevice mDevice;
-    private int mPassword;
 
-    protected R300Module(String uartName, int password, int baudRate) throws IOException {
-        this(uartName, baudRate, password, null);
-    }
+    private byte[] mAddress;
+    private byte[] mPassword;
 
-    protected R300Module(String uartName, int password, int baudRate, Handler handler) throws IOException {
+    /**
+     * @param uartPort UART port name where the module is attached. Cannot be null.
+     * @param address  Address of module.
+     * @param password Password of module.
+     * @throws IOException if the hardware board had a problem with its hardware ports
+     */
+    protected R300Module(@NonNull String uartPort, byte[] address, byte[] password) throws IOException {
         try {
-            PeripheralManagerService manager = new PeripheralManagerService();
-            UartDevice device = manager.openUartDevice(uartName);
-            init(device, baudRate, password, handler);
+            initializePeripherals(uartPort);
         } catch (IOException e) {
+            Log.e(TAG, "Error initializing UART Device", e);
             close();
             throw e;
         }
+
+        this.mAddress = address;
+        this.mPassword = password;
     }
 
+    /**
+     * Transforms array of bytes to hex-encoded string
+     *
+     * @param bytes Bytes to be processed
+     * @return String of hex-encoded bytes
+     */
     public static String byteArrayToHexString(final byte[] bytes) { //todo: delete this crap
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {
@@ -50,36 +64,39 @@ public class R300Module implements AutoCloseable {
         return sb.toString();
     }
 
-    public void init(UartDevice device, int baudRate, int password, Handler handler) throws IOException {
-        mPassword = password;
-
-        mDevice = device;
-        mDevice.setBaudrate(baudRate);
-        mDevice.setDataSize(8);
-        mDevice.setParity(UartDevice.PARITY_NONE);
-        mDevice.setStopBits(1);
+    /**
+     * Performs the initial configuration on hardware ports
+     *
+     * @throws IOException if the hardware board had a problem with its hardware ports
+     */
+    private void initializePeripherals(String uartPort) throws IOException {
+        PeripheralManagerService peripheralManagerService = new PeripheralManagerService();
+        this.mDevice = peripheralManagerService.openUartDevice(uartPort);
+        this.mDevice.setBaudrate(DEFAULT_BAUDRATE);
+        this.mDevice.setDataSize(8);
+        this.mDevice.setStopBits(1);
+        this.mDevice.setParity(UartDevice.PARITY_NONE);
     }
 
     @Override
     public void close() throws IOException {
-        if (mDevice != null) {
+        if (this.mDevice != null) {
             try {
-                mDevice.close();
+                this.mDevice.close();
             } finally {
-                mDevice = null;
+                this.mDevice = null;
             }
         }
     }
 
+    /**
+     * Verify Module’s handshaking password.
+     *
+     * @return {@link R300Packet#FINGERPRINT_OK} if password is correct, {@link R300Packet#FINGERPRINT_PASSFAIL} if password is invalid, {@link R300Packet#FINGERPRINT_PACKETRECIEVEERR} otherwise
+     */
     public int VfyPwd() {
         try {
-            R300Packet packet = getPacket(
-                    FINGERPRINT_VERIFYPASSWORD,
-                    (byte) ((mPassword >> 24) & 0xFF),
-                    (byte) ((mPassword >> 16) & 0xFF),
-                    (byte) ((mPassword >> 8) & 0xFF),
-                    (byte) (mPassword & 0xFF)
-            );
+            R300Packet packet = getPacket(FINGERPRINT_VERIFYPASSWORD, this.mPassword);
 
             if (packet.data[0] == FINGERPRINT_OK)
                 return FINGERPRINT_OK;
@@ -93,18 +110,20 @@ public class R300Module implements AutoCloseable {
         }
     }
 
-    public int SetPwd(int password) {
+    /**
+     * <b>Warning!</b> Avoid using! Password will not be saved!
+     * <p>
+     * Set Module’s handshaking password.
+     *
+     * @param password Password to be set
+     * @return {@link R300Packet#FINGERPRINT_OK} if password setting completed, {@link R300Packet#FINGERPRINT_PACKETRECIEVEERR} otherwise
+     */
+    public int SetPwd(byte[] password) {
         try {
-            R300Packet packet = getPacket(
-                    FINGERPRINT_SETPASSWORD,
-                    (byte) ((password >> 24) & 0xFF),
-                    (byte) ((password >> 16) & 0xFF),
-                    (byte) ((password >> 8) & 0xFF),
-                    (byte) (password & 0xFF)
-            );
+            R300Packet packet = getPacket(FINGERPRINT_SETPASSWORD, password);
 
             if (packet.data[0] == FINGERPRINT_OK) {
-                mPassword = password;
+                this.mPassword = password;
                 return FINGERPRINT_OK;
             } else {
                 return FINGERPRINT_PACKETRECIEVEERR;
@@ -115,25 +134,81 @@ public class R300Module implements AutoCloseable {
         }
     }
 
-    private R300Packet getPacket(byte... data) throws IOException {
-        writeStructuredPacket(new R300Packet(FINGERPRINT_COMMANDPACKET, data));
-        R300Packet packet = new R300Packet();
-        readStructuredPacket(packet);
-        return packet;
+    /**
+     * <b>Warning!</b> Avoid using! Address will not be saved!
+     * <p>
+     * Set Module address.
+     *
+     * @param adder New address of module
+     * @return {@link R300Packet#FINGERPRINT_OK} if address setting completed, {@link R300Packet#FINGERPRINT_PACKETRECIEVEERR} otherwise
+     */
+    public int SetAdder(byte[] adder) {
+        try {
+            R300Packet packet = getPacket(FINGERPRINT_SETADDRESS, adder);
+
+            if (packet.data[0] == FINGERPRINT_OK) {
+                this.mAddress = adder;
+                return FINGERPRINT_OK;
+            } else {
+                return FINGERPRINT_PACKETRECIEVEERR;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error setting password: ", e);
+            return FINGERPRINT_PACKETRECIEVEERR;
+        }
     }
 
-    private void writeStructuredPacket(R300Packet packet) throws IOException {
+    /**
+     * Sends packet to module, waits for answer an returns it
+     *
+     * @param instruction Instruction code (identifier of function)
+     * @param data        Data to be written
+     * @return Response of the module
+     * @throws IOException todo: how to describe that?
+     */
+    private R300Packet getPacket(byte instruction, byte[] data) throws IOException {
+        writePacket(createCommand(instruction, data));
+        return readStructuredPacket();
+    }
+
+    /**
+     * Transforms given parameters to structured packet
+     *
+     * @param instruction Function's instruction code
+     * @param data        Data to be written
+     * @return Packet of given parameters
+     */
+    private R300Packet createCommand(byte instruction, byte[] data) {
+        byte[] dataFull = new byte[data.length + 1];
+        dataFull[0] = instruction;
+        System.arraycopy(data, 0, dataFull, 1, data.length);
+        return new R300Packet(this.mAddress, FINGERPRINT_COMMANDPACKET, dataFull);
+    }
+
+    /**
+     * Writes packet to module
+     *
+     * @param packet Packet to be written
+     * @throws IOException todo: how to describe that?
+     */
+    private void writePacket(R300Packet packet) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         packet.write(byteArrayOutputStream);
         try {
             mDevice.write(byteArrayOutputStream.toByteArray(), byteArrayOutputStream.size());
-            Log.d(TAG, String.format("Written to module: %s", byteArrayToHexString(byteArrayOutputStream.toByteArray())));
+            Log.v(TAG, String.format("Written to module: %s", byteArrayToHexString(byteArrayOutputStream.toByteArray())));
         } finally {
             byteArrayOutputStream.close();
         }
     }
 
-    private int readStructuredPacket(R300Packet packet) {
+    /**
+     * Retrieves response of module
+     *
+     * @return Data given by module
+     */
+    private R300Packet readStructuredPacket() {
+        R300Packet packet = new R300Packet();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         int index = 0;
         int wireLength = 0;
@@ -170,13 +245,13 @@ public class R300Module implements AutoCloseable {
                         case 7:
                         case 8:
                             packet.length[(index - 7)] = buf;
-                            wireLength = (packet.length[0] << 8) | packet.length[1];
+                            wireLength = (packet.length[0] << 8) | packet.length[1]; // transform to integer
                             break;
                         default:
                             packet.data[(index - 9)] = buf;
                             if ((index - 8) >= wireLength) {
-                                Log.d(TAG, String.format("Read from module: %s", byteArrayToHexString(byteArrayOutputStream.toByteArray())));
-                                return FINGERPRINT_OK;
+                                Log.d(TAG, String.format("Read from module: %s", byteArrayToHexString(byteArrayOutputStream.toByteArray()))); // todo: delete after end of development
+                                return packet;
                             }
                             break;
                     }
@@ -189,6 +264,6 @@ public class R300Module implements AutoCloseable {
         }
 
         // Shouldn't get here so...
-        return FINGERPRINT_BADPACKET;
+        return null;
     }
 }

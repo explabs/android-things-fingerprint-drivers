@@ -19,11 +19,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         try {
-            r300Driver = new R300Driver(this, BoardDefaults.getUartName(), BoardDefaults.getTouchGpioPin(), BoardDefaults.getTouchPowerGpioPin(), 0xFFFFFFFF);
-            Log.d(TAG, "Initialized R300 Driver");
+            r300Driver = new R300Driver(BoardDefaults.getUartName());
+            Log.i(TAG, "Initialized R300 Driver");
 
-            r300Driver.setPassword(0xFFFFFFFF);
-            Log.d(TAG, String.format("Verify password: %s", r300Driver.verifyPassword()));
         } catch (IOException e) {
             throw new RuntimeException("Error initializing R300 Driver", e);
         }

@@ -162,8 +162,12 @@ public class R300Module implements AutoCloseable {
         }
     }
 
-
-    public byte[] ReadSysPara(){
+    /**
+     * todo: javadoc
+     *
+     * @return
+     */
+    public byte[] ReadSysPara() {
         try {
             R300Packet packet = getPacket(FINGERPRINT_UPLOADFAIL);
 
@@ -179,9 +183,9 @@ public class R300Module implements AutoCloseable {
     }
 
     /**
-     * read the current valid template number of the Module
+     * Read the current valid template number of the Module
      *
-     * @return
+     * @return Template number of the Module
      */
     public byte[] TempleteNum() {
         try {
@@ -212,10 +216,9 @@ public class R300Module implements AutoCloseable {
     }
 
     /**
-     * to command the Module to generate a random number and return it to upper
-     computer;
-     * @return
-     * TODO: Поправить сообщение об ошибке
+     * To command the Module to generate a random number and return it to upper computer
+     *
+     * @return Random number from the module
      */
     public byte[] GetRandomCode() {
         try {
@@ -227,7 +230,7 @@ public class R300Module implements AutoCloseable {
                 return new byte[4];
             }
         } catch (IOException e) {
-            Log.e(TAG, "Error requesting templates num: ", e);
+            Log.e(TAG, "Error requesting random code: ", e);
             return new byte[4];
         }
     }

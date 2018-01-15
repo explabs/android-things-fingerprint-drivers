@@ -81,15 +81,13 @@ public class R300Driver implements AutoCloseable {
      * @return Transformed Integer.
      */
     public static int bytesToInt(byte[] bytes) {
-        switch (bytes.length) {
-            case 2:
-                return (bytes[0] << 8) | bytes[1];
-            case 3:
-                return (bytes[0] << 16) | (bytes[1] << 8) | bytes[2];
-            case 4:
-                return (bytes[0] << 24) | (bytes[2] << 16) | bytes[3];
+        int result = bytes[0];
+
+        for (int i = 0; i < bytes.length; i++) {
+            result |= bytes[i] << (8 * i);
         }
-        return bytes[0];
+
+        return result;
 
     }
 
@@ -156,19 +154,30 @@ public class R300Driver implements AutoCloseable {
     }
 
     /**
-     * @return
+     * Read the current valid template number of the Module
+     *
+     * @return Template number of the Module
      */
     public int getTemplateNum() {
         return bytesToInt(this.module.TempleteNum());
     }
 
-    public int getRandomCode(){
+    /**
+     * To command the Module to generate a random number and return it to upper computer
+     *
+     * @return Random number from the module
+     */
+    public int getRandomCode() {
         return bytesToInt(this.module.GetRandomCode());
     }
 
-    public  int readSysPara(){
+    /**
+     * todo: javadoc
+     * todo: parsing
+     *
+     * @return
+     */
+    public int readSystemParameter() {
         return bytesToInt(this.module.ReadSysPara());
     }
 }
-
-    // TODO:  запарсить ReadSysPara в модуле, написать документацию, где ее не хватает.

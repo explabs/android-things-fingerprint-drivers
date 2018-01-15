@@ -18,6 +18,7 @@ import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_PASS
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_SETADDRESS;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_SETPASSWORD;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_TEMPLATECOUNT;
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_UPLOADFAIL;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_VERIFYPASSWORD;
 
 /**
@@ -161,7 +162,20 @@ public class R300Module implements AutoCloseable {
         }
     }
 
-    public
+    public byte[] ReadSysPara(){
+        try {
+            R300Packet packet = getPacket(FINGERPRINT_UPLOADFAIL);
+
+            if (packet.data[0] == FINGERPRINT_OK) {
+                return Arrays.copyOfRange(packet.data, 1, 17);
+            } else {
+                return new byte[16];
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error requesting templates num: ", e);
+            return new byte[16];
+        }
+    }
 
     /**
      * read the current valid template number of the Module
@@ -175,11 +189,11 @@ public class R300Module implements AutoCloseable {
             if (packet.data[0] == FINGERPRINT_OK) {
                 return Arrays.copyOfRange(packet.data, 1, 3);
             } else {
-                return new byte[]{0, 0};
+                return new byte[2];
             }
         } catch (IOException e) {
             Log.e(TAG, "Error requesting templates num: ", e);
-            return new byte[]{0, 0};
+            return new byte[2];
         }
     }
 
@@ -200,6 +214,7 @@ public class R300Module implements AutoCloseable {
      * to command the Module to generate a random number and return it to upper
      computer;
      * @return
+     * TODO: Поправить сообщение об ошибке
      */
     public byte[] GetRandomCode() {
         try {
@@ -208,11 +223,11 @@ public class R300Module implements AutoCloseable {
             if (packet.data[0] == FINGERPRINT_OK) {
                 return Arrays.copyOfRange(packet.data, 1, 5);
             } else {
-                return new byte[]{0, 0, 0, 0};
+                return new byte[4];
             }
         } catch (IOException e) {
             Log.e(TAG, "Error requesting templates num: ", e);
-            return new byte[]{0, 0, 0, 0};
+            return new byte[4];
         }
     }
 

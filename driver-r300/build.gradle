@@ -29,6 +29,7 @@ android {
 
     testOptions {
         junitPlatform {
+            unitTests.returnDefaultValues = true
             details "tree"
         }
     }

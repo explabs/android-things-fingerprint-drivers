@@ -80,8 +80,17 @@ public class R300Driver implements AutoCloseable {
      * @param bytes Array of unsigned bytes. Higher bit first.
      * @return Transformed Integer.
      */
-    public  static int bytesToInt(byte[] bytes){
-        return (bytes[0] << 8) | bytes[1];
+    public static int bytesToInt(byte[] bytes) {
+        switch (bytes.length) {
+            case 2:
+                return (bytes[0] << 8) | bytes[1];
+            case 3:
+                return (bytes[0] << 16) | (bytes[1] << 8) | bytes[2];
+            case 4:
+                return (bytes[0] << 24) | (bytes[2] << 16) | bytes[3];
+        }
+        return bytes[0];
+
     }
 
     @Override
@@ -147,10 +156,13 @@ public class R300Driver implements AutoCloseable {
     }
 
     /**
-     *
      * @return
      */
-    public  int getTemplateNum(){
-        return  bytesToInt(this.module.TempleteNum());
+    public int getTemplateNum() {
+        return bytesToInt(this.module.TempleteNum());
+    }
+
+    public int getRandomCode(){
+        return bytesToInt(this.module.GetRandomCode());
     }
 }

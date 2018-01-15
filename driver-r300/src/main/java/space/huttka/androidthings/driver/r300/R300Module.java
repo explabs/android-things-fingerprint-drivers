@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_COMMANDPACKET;
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_GETRANDOMCODE;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_OK;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_PACKETRECIEVEERR;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_PASSFAIL;
@@ -160,8 +161,11 @@ public class R300Module implements AutoCloseable {
         }
     }
 
+    public
+
     /**
-     *  read the current valid template number of the Module
+     * read the current valid template number of the Module
+     *
      * @return
      */
     public byte[] TempleteNum() {
@@ -180,16 +184,36 @@ public class R300Module implements AutoCloseable {
     }
 
 
-
     /**
      * Sends packet to module, waits for answer an returns it
+     *
      * @param instruction Instruction code (identifier of function)
      * @return Response of the module
      * @throws IOException todo: how to describe that?
      */
     public R300Packet getPacket(byte instruction) throws IOException {
 
-        return  getPacket(instruction, null);
+        return getPacket(instruction, null);
+    }
+
+    /**
+     * to command the Module to generate a random number and return it to upper
+     computer;
+     * @return
+     */
+    public byte[] GetRandomCode() {
+        try {
+            R300Packet packet = getPacket(FINGERPRINT_GETRANDOMCODE);
+
+            if (packet.data[0] == FINGERPRINT_OK) {
+                return Arrays.copyOfRange(packet.data, 1, 5);
+            } else {
+                return new byte[]{0, 0, 0, 0};
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error requesting templates num: ", e);
+            return new byte[]{0, 0, 0, 0};
+        }
     }
 
     /**

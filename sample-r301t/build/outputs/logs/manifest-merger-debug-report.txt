@@ -1,0 +1,83 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:2:1-9:12
+INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:2:1-9:12
+INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:2:1-9:12
+INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:2:1-9:12
+MERGED from [:driver-r301t] C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\driver-r301t\build\intermediates\manifests\full\debug\AndroidManifest.xml:2:1-15:12
+MERGED from [com.android.support:appcompat-v7:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.0.2.aar\34950c41bdb8ff586c5fd06408a62b67\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\adf6f2fb7434ce4dc4cffbdd03222ff9\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:support-fragment:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-fragment-27.0.2.aar\ecfe093d62c7a563ffce07a99cde9658\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.0.2.aar\3a6ebb65cbe49602109cbb03345966b2\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.0.2.aar\7cca576eaaa39d296336a2fb918a2b95\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.0.2.aar\5952af6d8771c3f49c457040dab02b4c\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.0.2.aar\1399de7555782682729a4d9471553f47\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-compat-27.0.2.aar\b2f90ede6c62d344315e06821d934167\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.0.3] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\runtime-1.0.3.aar\544cdd2eaff37565d8c56082088de596\AndroidManifest.xml:17:1-24:12
+INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:2:1-9:12
+INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:2:1-9:12
+INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:2:1-9:12
+	package
+		ADDED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:3:5-61
+		INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+		ADDED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:2:1-9:12
+		INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+		ADDED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:2:1-9:12
+		INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:2:11-69
+application
+ADDED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:5:5-7:19
+MERGED from [:driver-r301t] C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\driver-r301t\build\intermediates\manifests\full\debug\AndroidManifest.xml:9:5-13:19
+MERGED from [:driver-r301t] C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\driver-r301t\build\intermediates\manifests\full\debug\AndroidManifest.xml:9:5-13:19
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\adf6f2fb7434ce4dc4cffbdd03222ff9\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\adf6f2fb7434ce4dc4cffbdd03222ff9\AndroidManifest.xml:9:5-20
+activity#space.huttka.androidthings.driver.r301t.sample.MainActivity
+ADDED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:6:9-59
+	android:name
+		ADDED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml:6:19-47
+uses-sdk
+INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+MERGED from [:driver-r301t] C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\driver-r301t\build\intermediates\manifests\full\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:driver-r301t] C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\driver-r301t\build\intermediates\manifests\full\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:appcompat-v7:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.0.2.aar\34950c41bdb8ff586c5fd06408a62b67\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.0.2.aar\34950c41bdb8ff586c5fd06408a62b67\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\adf6f2fb7434ce4dc4cffbdd03222ff9\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\adf6f2fb7434ce4dc4cffbdd03222ff9\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-fragment:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-fragment-27.0.2.aar\ecfe093d62c7a563ffce07a99cde9658\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-fragment-27.0.2.aar\ecfe093d62c7a563ffce07a99cde9658\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.0.2.aar\3a6ebb65cbe49602109cbb03345966b2\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.0.2.aar\3a6ebb65cbe49602109cbb03345966b2\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.0.2.aar\7cca576eaaa39d296336a2fb918a2b95\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.0.2.aar\7cca576eaaa39d296336a2fb918a2b95\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.0.2.aar\5952af6d8771c3f49c457040dab02b4c\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.0.2.aar\5952af6d8771c3f49c457040dab02b4c\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.0.2.aar\1399de7555782682729a4d9471553f47\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.0.2.aar\1399de7555782682729a4d9471553f47\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-compat-27.0.2.aar\b2f90ede6c62d344315e06821d934167\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.0.2] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\support-compat-27.0.2.aar\b2f90ede6c62d344315e06821d934167\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.0.3] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\runtime-1.0.3.aar\544cdd2eaff37565d8c56082088de596\AndroidManifest.xml:20:5-22:41
+MERGED from [android.arch.lifecycle:runtime:1.0.3] C:\Users\frolo\.gradle\caches\transforms-1\files-1.1\runtime-1.0.3.aar\544cdd2eaff37565d8c56082088de596\AndroidManifest.xml:20:5-22:41
+INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+		ADDED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+		ADDED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\sample-r301t\src\main\AndroidManifest.xml
+uses-library#com.google.android.things
+ADDED from [:driver-r301t] C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\driver-r301t\build\intermediates\manifests\full\debug\AndroidManifest.xml:10:9-12:40
+	android:required
+		ADDED from [:driver-r301t] C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\driver-r301t\build\intermediates\manifests\full\debug\AndroidManifest.xml:12:13-37
+	android:name
+		ADDED from [:driver-r301t] C:\Users\frolo\StudioProjects\android-things-fingerprint-drivers\driver-r301t\build\intermediates\manifests\full\debug\AndroidManifest.xml:11:13-53

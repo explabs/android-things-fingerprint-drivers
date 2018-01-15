@@ -8,6 +8,7 @@ import com.google.android.things.pio.UartDevice;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_COMMANDPACKET;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_OK;
@@ -15,6 +16,7 @@ import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_PACK
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_PASSFAIL;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_SETADDRESS;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_SETPASSWORD;
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_TEMPLATECOUNT;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_VERIFYPASSWORD;
 
 /**
@@ -94,7 +96,7 @@ public class R300Module implements AutoCloseable {
      *
      * @return {@link R300Packet#FINGERPRINT_OK} if password is correct, {@link R300Packet#FINGERPRINT_PASSFAIL} if password is invalid, {@link R300Packet#FINGERPRINT_PACKETRECIEVEERR} otherwise
      */
-    public int VfyPwd() {
+    public byte VfyPwd() {
         try {
             R300Packet packet = getPacket(FINGERPRINT_VERIFYPASSWORD, this.mPassword);
 
@@ -118,7 +120,7 @@ public class R300Module implements AutoCloseable {
      * @param password Password to be set
      * @return {@link R300Packet#FINGERPRINT_OK} if password setting completed, {@link R300Packet#FINGERPRINT_PACKETRECIEVEERR} otherwise
      */
-    public int SetPwd(byte[] password) {
+    public byte SetPwd(byte[] password) {
         try {
             R300Packet packet = getPacket(FINGERPRINT_SETPASSWORD, password);
 
@@ -142,7 +144,7 @@ public class R300Module implements AutoCloseable {
      * @param adder New address of module
      * @return {@link R300Packet#FINGERPRINT_OK} if address setting completed, {@link R300Packet#FINGERPRINT_PACKETRECIEVEERR} otherwise
      */
-    public int SetAdder(byte[] adder) {
+    public byte SetAdder(byte[] adder) {
         try {
             R300Packet packet = getPacket(FINGERPRINT_SETADDRESS, adder);
 
@@ -156,6 +158,38 @@ public class R300Module implements AutoCloseable {
             Log.e(TAG, "Error setting password: ", e);
             return FINGERPRINT_PACKETRECIEVEERR;
         }
+    }
+
+    /**
+     *  read the current valid template number of the Module
+     * @return
+     */
+    public byte[] TempleteNum() {
+        try {
+            R300Packet packet = getPacket(FINGERPRINT_TEMPLATECOUNT);
+
+            if (packet.data[0] == FINGERPRINT_OK) {
+                return Arrays.copyOfRange(packet.data, 1, 3);
+            } else {
+                return new byte[]{0, 0};
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error requesting templates num: ", e);
+            return new byte[]{0, 0};
+        }
+    }
+
+
+
+    /**
+     * Sends packet to module, waits for answer an returns it
+     * @param instruction Instruction code (identifier of function)
+     * @return Response of the module
+     * @throws IOException todo: how to describe that?
+     */
+    public R300Packet getPacket(byte instruction) throws IOException {
+
+        return  getPacket(instruction, null);
     }
 
     /**

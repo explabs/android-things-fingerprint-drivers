@@ -70,8 +70,18 @@ public class R300Driver implements AutoCloseable {
      * @param i Integer to be transformed.
      * @return Array of unsigned bytes. Higher bit first.
      */
-    private static byte[] intToBytes(int i) {
+    public static byte[] intToBytes(int i) {
         return new byte[]{(byte) ((i >> 24) & 0xFF), (byte) ((i >> 16) & 0xFF), (byte) ((i >> 8) & 0xFF), (byte) (i & 0xFF)};
+    }
+
+    /**
+     * Transforms array of unsigned bytes to integer.
+     *
+     * @param bytes Array of unsigned bytes. Higher bit first.
+     * @return Transformed Integer.
+     */
+    public  static int bytesToInt(byte[] bytes){
+        return (bytes[0] << 8) | bytes[1];
     }
 
     @Override
@@ -134,5 +144,13 @@ public class R300Driver implements AutoCloseable {
      */
     public boolean setAddress(byte[] address) {
         return module.SetAdder(address) == FINGERPRINT_OK;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public  int getTemplateNum(){
+        return  bytesToInt(this.module.TempleteNum());
     }
 }

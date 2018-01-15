@@ -165,6 +165,10 @@ public class R300Driver implements AutoCloseable {
     public int getRandomCode(){
         return bytesToInt(this.module.GetRandomCode());
     }
-    // TODO: написать функцию в драйве, запарсить ReadSysPara в модуле.
 
+    public  int readSysPara(){
+        return bytesToInt(this.module.ReadSysPara());
+    }
 }
+
+    // TODO:  запарсить ReadSysPara в модуле, написать документацию, где ее не хватает.

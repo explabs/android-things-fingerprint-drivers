@@ -162,6 +162,7 @@ public class R300Module implements AutoCloseable {
         }
     }
 
+
     public byte[] ReadSysPara(){
         try {
             R300Packet packet = getPacket(FINGERPRINT_UPLOADFAIL);

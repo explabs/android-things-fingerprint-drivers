@@ -70,7 +70,7 @@ public class R300Driver implements AutoCloseable {
      * @param i Integer to be transformed.
      * @return Array of unsigned bytes. Higher bit first.
      */
-    private static byte[] intToBytes(int i) {
+    public static byte[] intToBytes(int i) {
         return new byte[]{(byte) ((i >> 24) & 0xFF), (byte) ((i >> 16) & 0xFF), (byte) ((i >> 8) & 0xFF), (byte) (i & 0xFF)};
     }
 

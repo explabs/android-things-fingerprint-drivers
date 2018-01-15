@@ -23,7 +23,7 @@ Based on [Adafruit-Fingerprint-Sensor-Library](https://github.com/adafruit/Adafr
 - [x] Receiving packets from module
 - [x] Verify password
 - [x] Set password
-- [ ] Set Module address
+- [x] Set Module address
 - [ ] Set module system’s basic parameter
 - [ ] Port Control
 - [ ] Read system Parameter

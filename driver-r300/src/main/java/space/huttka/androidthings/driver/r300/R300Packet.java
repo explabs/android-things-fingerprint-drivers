@@ -54,6 +54,7 @@ public class R300Packet {
 
     public static final byte FINGERPRINT_VERIFYPASSWORD = 0x13;
     public static final byte FINGERPRINT_SETPASSWORD = 0x12;
+    public static final byte FINGERPRINT_GETRANDOMCODE = 0x14;
     public static final byte FINGERPRINT_SETADDRESS = 0x15;
 
     private static final String TAG = "R300Packet";

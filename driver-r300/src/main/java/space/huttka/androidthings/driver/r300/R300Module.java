@@ -8,13 +8,17 @@ import com.google.android.things.pio.UartDevice;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_COMMANDPACKET;
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_GETRANDOMCODE;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_OK;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_PACKETRECIEVEERR;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_PASSFAIL;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_SETADDRESS;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_SETPASSWORD;
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_TEMPLATECOUNT;
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_UPLOADFAIL;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_VERIFYPASSWORD;
 
 /**
@@ -94,7 +98,7 @@ public class R300Module implements AutoCloseable {
      *
      * @return {@link R300Packet#FINGERPRINT_OK} if password is correct, {@link R300Packet#FINGERPRINT_PASSFAIL} if password is invalid, {@link R300Packet#FINGERPRINT_PACKETRECIEVEERR} otherwise
      */
-    public int VfyPwd() {
+    public byte VfyPwd() {
         try {
             R300Packet packet = getPacket(FINGERPRINT_VERIFYPASSWORD, this.mPassword);
 
@@ -118,7 +122,7 @@ public class R300Module implements AutoCloseable {
      * @param password Password to be set
      * @return {@link R300Packet#FINGERPRINT_OK} if password setting completed, {@link R300Packet#FINGERPRINT_PACKETRECIEVEERR} otherwise
      */
-    public int SetPwd(byte[] password) {
+    public byte SetPwd(byte[] password) {
         try {
             R300Packet packet = getPacket(FINGERPRINT_SETPASSWORD, password);
 
@@ -142,7 +146,7 @@ public class R300Module implements AutoCloseable {
      * @param adder New address of module
      * @return {@link R300Packet#FINGERPRINT_OK} if address setting completed, {@link R300Packet#FINGERPRINT_PACKETRECIEVEERR} otherwise
      */
-    public int SetAdder(byte[] adder) {
+    public byte SetAdder(byte[] adder) {
         try {
             R300Packet packet = getPacket(FINGERPRINT_SETADDRESS, adder);
 
@@ -155,6 +159,79 @@ public class R300Module implements AutoCloseable {
         } catch (IOException e) {
             Log.e(TAG, "Error setting password: ", e);
             return FINGERPRINT_PACKETRECIEVEERR;
+        }
+    }
+
+    /**
+     * todo: javadoc
+     *
+     * @return
+     */
+    public byte[] ReadSysPara() {
+        try {
+            R300Packet packet = getPacket(FINGERPRINT_UPLOADFAIL);
+
+            if (packet.data[0] == FINGERPRINT_OK) {
+                return Arrays.copyOfRange(packet.data, 1, 17);
+            } else {
+                return new byte[16];
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error requesting templates num: ", e);
+            return new byte[16];
+        }
+    }
+
+    /**
+     * Read the current valid template number of the Module
+     *
+     * @return Template number of the Module
+     */
+    public byte[] TempleteNum() {
+        try {
+            R300Packet packet = getPacket(FINGERPRINT_TEMPLATECOUNT);
+
+            if (packet.data[0] == FINGERPRINT_OK) {
+                return Arrays.copyOfRange(packet.data, 1, 3);
+            } else {
+                return new byte[2];
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error requesting templates num: ", e);
+            return new byte[2];
+        }
+    }
+
+
+    /**
+     * Sends packet to module, waits for answer an returns it
+     *
+     * @param instruction Instruction code (identifier of function)
+     * @return Response of the module
+     * @throws IOException todo: how to describe that?
+     */
+    public R300Packet getPacket(byte instruction) throws IOException {
+
+        return getPacket(instruction, null);
+    }
+
+    /**
+     * To command the Module to generate a random number and return it to upper computer
+     *
+     * @return Random number from the module
+     */
+    public byte[] GetRandomCode() {
+        try {
+            R300Packet packet = getPacket(FINGERPRINT_GETRANDOMCODE);
+
+            if (packet.data[0] == FINGERPRINT_OK) {
+                return Arrays.copyOfRange(packet.data, 1, 5);
+            } else {
+                return new byte[4];
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error requesting random code: ", e);
+            return new byte[4];
         }
     }
 

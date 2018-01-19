@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_COMMANDPACKET;
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_DBCLEARFAIL;
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_EMPTY;
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_GETIMAGE;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_GETRANDOMCODE;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_OK;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_PACKETRECIEVEERR;
@@ -98,6 +101,33 @@ public class R300Module implements AutoCloseable {
      *
      * @return {@link R300Packet#FINGERPRINT_OK} if password is correct, {@link R300Packet#FINGERPRINT_PASSFAIL} if password is invalid, {@link R300Packet#FINGERPRINT_PACKETRECIEVEERR} otherwise
      */
+
+
+    /**
+     * to delete all the templates in the Flash library
+     *
+     * @return {@link R300Packet#FINGERPRINT_OK} if empty success, {@link R300Packet#FINGERPRINT_DBCLEARFAIL} if data base clear fail, {@link R300Packet#FINGERPRINT_PACKETRECIEVEERR} otherwise
+     */
+    public byte Empty() {
+        try {
+            R300Packet packet = getPacket(FINGERPRINT_EMPTY);
+
+            if (packet.data[0] == FINGERPRINT_OK)
+                return FINGERPRINT_OK;
+            else if (packet.data[0] == FINGERPRINT_DBCLEARFAIL)
+                return FINGERPRINT_DBCLEARFAIL;
+            else
+                return FINGERPRINT_PACKETRECIEVEERR;
+        } catch (IOException e) {
+            Log.e(TAG, "Fail to clear finger library: ", e);
+            return FINGERPRINT_PACKETRECIEVEERR;
+        }
+    }
+
+    /**
+     * detecting finger and store the detected finger image in ImageBuffer while returning successfull confirmation code;
+     */
+
     public byte VfyPwd() {
         try {
             R300Packet packet = getPacket(FINGERPRINT_VERIFYPASSWORD, this.mPassword);
@@ -109,7 +139,7 @@ public class R300Module implements AutoCloseable {
             else
                 return FINGERPRINT_PACKETRECIEVEERR;
         } catch (IOException e) {
-            Log.e(TAG, "Error checking password: ", e);
+            Log.e(TAG, "Error when receiving package: ", e);
             return FINGERPRINT_PACKETRECIEVEERR;
         }
     }
@@ -157,7 +187,7 @@ public class R300Module implements AutoCloseable {
                 return FINGERPRINT_PACKETRECIEVEERR;
             }
         } catch (IOException e) {
-            Log.e(TAG, "Error setting password: ", e);
+            Log.e(TAG, "Error setting address : ", e);
             return FINGERPRINT_PACKETRECIEVEERR;
         }
     }
@@ -177,7 +207,7 @@ public class R300Module implements AutoCloseable {
                 return new byte[16];
             }
         } catch (IOException e) {
-            Log.e(TAG, "Error requesting templates num: ", e);
+            Log.e(TAG, "Error when receiving package: ", e);
             return new byte[16];
         }
     }
@@ -213,6 +243,27 @@ public class R300Module implements AutoCloseable {
     public R300Packet getPacket(byte instruction) throws IOException {
 
         return getPacket(instruction, null);
+    }
+
+    /**
+     *  TODO: Леня разберись
+     * @return
+     */
+    public byte  GenImg(){
+        try {
+            R300Packet packet = getPacket(FINGERPRINT_GETIMAGE);
+
+            if (packet.data[0] == FINGERPRINT_OK) {
+                return FINGERPRINT_OK;
+            } else if (packet.data[0] == FINGERPRINT_UPLOADFAIL) {
+                return FINGERPRINT_UPLOADFAIL;
+            } else {
+                return FINGERPRINT_PACKETRECIEVEERR;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error setting address : ", e);
+            return FINGERPRINT_PACKETRECIEVEERR;
+        }
     }
 
     /**

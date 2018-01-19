@@ -180,4 +180,9 @@ public class R300Driver implements AutoCloseable {
     public int readSystemParameter() {
         return bytesToInt(this.module.ReadSysPara());
     }
+
+    public boolean empty() {
+        return module.Empty() == FINGERPRINT_OK;
+    }
+    public boolean get
 }

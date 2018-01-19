@@ -25,7 +25,6 @@ Based on [Adafruit-Fingerprint-Sensor-Library](https://github.com/adafruit/Adafr
 - [x] Set password
 - [x] Set Module address
 - [ ] Set module system’s basic parameter
-- [ ] Port Control
 - [ ] Read system Parameter
 - [x] Read valid template number
 - [ ] To collect finger image
@@ -37,7 +36,7 @@ Based on [Adafruit-Fingerprint-Sensor-Library](https://github.com/adafruit/Adafr
 - [ ] To store template
 - [ ] To read template from Flash library
 - [ ] To delete template
-- [ ] To empty finger library
+- [x] To empty finger library
 - [ ] To carry out precise matching of two finger templates
 - [ ] To search finger library
 - [x] To generate a random code

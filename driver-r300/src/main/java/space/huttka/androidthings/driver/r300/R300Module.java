@@ -13,6 +13,7 @@ import java.util.Arrays;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_COMMANDPACKET;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_DBCLEARFAIL;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_EMPTY;
+import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_ENDDATAPACKET;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_GETIMAGE;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_GETRANDOMCODE;
 import static space.huttka.androidthings.driver.r300.R300Packet.FINGERPRINT_OK;
@@ -246,10 +247,11 @@ public class R300Module implements AutoCloseable {
     }
 
     /**
-     *  TODO: Леня разберись
+     * TODO: Леня разберись
+     *
      * @return
      */
-    public byte  GenImg(){
+    public byte GenImg() {
         try {
             R300Packet packet = getPacket(FINGERPRINT_GETIMAGE);
 
@@ -264,6 +266,33 @@ public class R300Module implements AutoCloseable {
             Log.e(TAG, "Error setting address : ", e);
             return FINGERPRINT_PACKETRECIEVEERR;
         }
+    }
+
+    /**
+     * to upload the character file or template of CharBuffer1/CharBuffer2 to upper computer
+     * @return
+     */
+    public byte UpChar(){
+        try {
+            R300Packet packet = getPacket(FINGERPRINT_ENDDATAPACKET);
+
+            if (packet.data[0] == FINGERPRINT_OK) {
+                collectFingerPrint();
+                return FINGERPRINT_OK;
+            } else if (packet.data[0] == FINGERPRINT_UPLOADFAIL) {
+                return FINGERPRINT_UPLOADFAIL;
+            } else {
+                return FINGERPRINT_PACKETRECIEVEERR;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, " error when uploading char");
+            return FINGERPRINT_PACKETRECIEVEERR;
+        }
+    }
+
+    public byte[] collectFingerPrint(){
+        R300Packet packet = readStructuredPacket();
+        return  packet.data;
     }
 
     /**

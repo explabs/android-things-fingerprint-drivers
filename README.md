@@ -19,9 +19,30 @@ An Android Things library for Fingerprint scanners R300 series (R301T as referen
 Based on [Adafruit-Fingerprint-Sensor-Library](https://github.com/adafruit/Adafruit-Fingerprint-Sensor-Library) by **Adafruit**
 
 ### Features
-- [ ] Validating password
-- [ ] Authenticating fingerprint
-- [ ] Fetching fingerprint image
+- [x] Writing packet to module
+- [x] Receiving packets from module
+- [x] Verify password
+- [x] Set password
+- [ ] Set Module address
+- [ ] Set module system’s basic parameter
+- [ ] Port Control
+- [ ] Read system Parameter
+- [ ] Read valid template number
+- [ ] To collect finger image
+- [ ] Upload image
+- [ ] Download the image
+- [ ] To generate character file from image
+- [ ] To generate template
+- [ ] To upload character or template
+- [ ] To store template
+- [ ] To read template from Flash library
+- [ ] To delete template
+- [ ] To empty finger library
+- [ ] To carry out precise matching of two finger templates
+- [ ] To search finger library
+- [ ] To generate a random code
+- [ ] To write note pad
+- [ ] To read note pad
 
 How to use the driver
 ---------------------

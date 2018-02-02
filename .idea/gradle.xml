@@ -8,8 +8,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/driver-r301t" />
-            <option value="$PROJECT_DIR$/sample-r301t" />
+            <option value="$PROJECT_DIR$/driver-r300" />
+            <option value="$PROJECT_DIR$/sample-r300" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

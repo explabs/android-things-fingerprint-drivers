@@ -81,13 +81,15 @@ public class R300Driver implements AutoCloseable {
      * @return Transformed Integer.
      */
     public static int bytesToInt(byte[] bytes) {
-        int result = bytes[0];
-
-        for (int i = 0; i < bytes.length; i++) {
-            result |= bytes[i] << (8 * i);
+        switch (bytes.length) {
+            case 2:
+                return (bytes[1] << 8) | bytes[0];
+            case 3:
+                return (bytes[2] << 16) | (bytes[1] << 8) | bytes[0];
+            case 4:
+                return (bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[3];
         }
-
-        return result;
+        return bytes[0];
 
     }
 

@@ -28,7 +28,7 @@ dependencies {
     implementation rootProject.ext.dependencies['constraint-layout']
     compileOnly rootProject.ext.dependencies['androidthings']
 
-    testCompile rootProject.ext.dependencies['junit']
+    testCompile rootProject.ext.dependencies['junitJupiter']
 
     compile project(':driver-r300')
 }

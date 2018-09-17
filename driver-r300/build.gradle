@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
+apply plugin: "de.mannodermaus.android-junit5"
 
 buildscript {
     repositories {
@@ -7,6 +8,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.novoda:bintray-release:0.5.0'
+        classpath "de.mannodermaus.gradle.plugins:android-junit5:1.0.22"
     }
 }
 
@@ -17,6 +19,19 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    testOptions {
+        junitPlatform {
+            unitTests.returnDefaultValues = true
+            details "tree"
+        }
     }
 
 }
@@ -25,7 +40,9 @@ dependencies {
     implementation rootProject.ext.dependencies['support-annotations']
     provided rootProject.ext.dependencies['androidthings']
 
-    testCompile rootProject.ext.dependencies['junit']
+    testImplementation junit5.unitTests()
+    testImplementation junit5.parameterized()
+    testCompileOnly junit5.unitTestsRuntime()
 }
 
 publish {

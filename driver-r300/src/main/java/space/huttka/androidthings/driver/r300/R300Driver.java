@@ -70,8 +70,25 @@ public class R300Driver implements AutoCloseable {
      * @param i Integer to be transformed.
      * @return Array of unsigned bytes. Higher bit first.
      */
-    private static byte[] intToBytes(int i) {
+    public static byte[] intToBytes(int i) {
         return new byte[]{(byte) ((i >> 24) & 0xFF), (byte) ((i >> 16) & 0xFF), (byte) ((i >> 8) & 0xFF), (byte) (i & 0xFF)};
+    }
+
+    /**
+     * Transforms array of unsigned bytes to integer.
+     *
+     * @param bytes Array of unsigned bytes. Higher bit first.
+     * @return Transformed Integer.
+     */
+    public static int bytesToInt(byte[] bytes) {
+        int result = bytes[0];
+
+        for (int i = 0; i < bytes.length; i++) {
+            result |= bytes[i] << (8 * i);
+        }
+
+        return result;
+
     }
 
     @Override
@@ -135,4 +152,37 @@ public class R300Driver implements AutoCloseable {
     public boolean setAddress(byte[] address) {
         return module.SetAdder(address) == FINGERPRINT_OK;
     }
+
+    /**
+     * Read the current valid template number of the Module
+     *
+     * @return Template number of the Module
+     */
+    public int getTemplateNum() {
+        return bytesToInt(this.module.TempleteNum());
+    }
+
+    /**
+     * To command the Module to generate a random number and return it to upper computer
+     *
+     * @return Random number from the module
+     */
+    public int getRandomCode() {
+        return bytesToInt(this.module.GetRandomCode());
+    }
+
+    /**
+     * todo: javadoc
+     * todo: parsing
+     *
+     * @return
+     */
+    public int readSystemParameter() {
+        return bytesToInt(this.module.ReadSysPara());
+    }
+
+    public boolean empty() {
+        return module.Empty() == FINGERPRINT_OK;
+    }
+    public boolean get
 }

@@ -34,7 +34,7 @@ ext {
 
     dependencies = [
             'support-annotations': 'com.android.support:support-annotations:27.0.2',
-            'constraint-layout': 'com.android.support.constraint:constraint-layout:1.0.2',
+            'constraint-layout': 'com.android.support.constraint:constraint-layout:2.0.3',
             'androidthings': 'com.google.android.things:androidthings:0.6.1-devpreview',
             'junitVintage': 'junit:junit:4.12',
             'junitJupiter': 'org.junit.jupiter:junit-jupiter-api:5.0.2',
